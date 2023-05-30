@@ -12,12 +12,26 @@ class App extends Component {
   state = {
     contacts: initialContacts,
     filter: '',
+    isAdded: false,
   };
 
-  addContact = ({ name, number }) => {
+  componentDidMount() {
+    const contactsLS = JSON.parse(localStorage.getItem('contacts'));
+    if (contactsLS) {
+      this.setState({ contacts: contactsLS });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts !== contacts) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
+    }
+  }
+
+  addContact = ({ name, number, isAdded }) => {
     const normalizedName = name.toLowerCase();
 
-    let isAdded = false;
     this.state.contacts.forEach(el => {
       if (el.name.toLowerCase() === normalizedName) {
         alert(`${name}: is already in contacts`);
