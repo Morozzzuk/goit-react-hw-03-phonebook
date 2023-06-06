@@ -14,23 +14,10 @@ class App extends Component {
     filter: '',
   };
 
-  componentDidMount() {
-    const contactsLS = JSON.parse(localStorage.getItem('contacts'));
-    if (contactsLS) {
-      this.setState({ contacts: contactsLS });
-    }
-  }
-
-  componentDidUpdate(_, prevState) {
-    const { contacts } = this.state;
-    if (prevState.contacts !== contacts) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    }
-  }
-
   addContact = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
-    const isAdded = this.state.contacts.find(
+    const { contacts } = this.state;
+    const isAdded = contacts.find(
       el => el.name.toLowerCase() === normalizedName
     );
 
@@ -39,11 +26,13 @@ class App extends Component {
       Notiflix.Notify.failure(`${name}: is already in contacts`);
       return;
     }
+
     const contact = {
       id: nanoid(),
       name: name,
       number: number,
     };
+
     this.setState(prevState => ({
       contacts: [...prevState.contacts, contact],
     }));
