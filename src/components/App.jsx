@@ -12,7 +12,6 @@ class App extends Component {
   state = {
     contacts: initialContacts,
     filter: '',
-    isAdded: false,
   };
 
   componentDidMount() {
@@ -29,18 +28,15 @@ class App extends Component {
     }
   }
 
-  addContact = ({ name, number, isAdded }) => {
+  addContact = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
-
-    this.state.contacts.forEach(el => {
-      if (el.name.toLowerCase() === normalizedName) {
-        alert(`${name}: is already in contacts`);
-        Notiflix.Notify.failure(`${name}: is already in contacts`);
-        isAdded = true;
-      }
-    });
+    const isAdded = this.state.contacts.find(
+      el => el.name.toLowerCase() === normalizedName
+    );
 
     if (isAdded) {
+      alert(`${name}: is already in contacts`);
+      Notiflix.Notify.failure(`${name}: is already in contacts`);
       return;
     }
     const contact = {
