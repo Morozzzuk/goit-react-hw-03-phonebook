@@ -15,19 +15,19 @@ class App extends Component {
     isAdded: false,
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     const contactsLS = JSON.parse(localStorage.getItem('contacts'));
     if (contactsLS) {
       this.setState({ contacts: contactsLS });
     }
-  }
+  };
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate = (_, prevState) => {
     const { contacts } = this.state;
     if (prevState.contacts !== contacts) {
       localStorage.setItem('contacts', JSON.stringify(contacts));
     }
-  }
+  };
 
   addContact = ({ name, number, isAdded }) => {
     const normalizedName = name.toLowerCase();
