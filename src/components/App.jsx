@@ -12,7 +12,6 @@ class App extends Component {
   state = {
     contacts: initialContacts,
     filter: '',
-    isAdded: false,
   };
 
   componentDidMount = () => {
@@ -21,33 +20,40 @@ class App extends Component {
       this.setState({ contacts: contactsLS });
     }
   };
+  // componentDidMount() {
+  //   const contacts = localStorage.getItem('contacts');
+  //   const parsedContacts = JSON.parse(contacts);
+  //   if (parsedContacts) {
+  //     this.setState({ contacts: parsedContacts });
+  //   }
+  // }
 
-  componentDidUpdate = (_, prevState) => {
+  componentDidUpdate(_, prevState) {
     const { contacts } = this.state;
     if (prevState.contacts !== contacts) {
       localStorage.setItem('contacts', JSON.stringify(contacts));
     }
-  };
+  }
 
-  addContact = ({ name, number, isAdded }) => {
+  addContact = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
-
-    this.state.contacts.forEach(el => {
-      if (el.name.toLowerCase() === normalizedName) {
-        alert(`${name}: is already in contacts`);
-        Notiflix.Notify.failure(`${name}: is already in contacts`);
-        isAdded = true;
-      }
-    });
+    const { contacts } = this.state;
+    const isAdded = contacts.find(
+      el => el.name.toLowerCase() === normalizedName
+    );
 
     if (isAdded) {
+      alert(`${name}: is already in contacts`);
+      Notiflix.Notify.failure(`${name}: is already in contacts`);
       return;
     }
+
     const contact = {
       id: nanoid(),
       name: name,
       number: number,
     };
+
     this.setState(prevState => ({
       contacts: [...prevState.contacts, contact],
     }));
