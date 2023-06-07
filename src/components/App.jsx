@@ -20,20 +20,13 @@ class App extends Component {
       this.setState({ contacts: contactsLS });
     }
   };
-  // componentDidMount() {
-  //   const contacts = localStorage.getItem('contacts');
-  //   const parsedContacts = JSON.parse(contacts);
-  //   if (parsedContacts) {
-  //     this.setState({ contacts: parsedContacts });
-  //   }
-  // }
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate = (_, prevState) => {
     const { contacts } = this.state;
     if (prevState.contacts !== contacts) {
       localStorage.setItem('contacts', JSON.stringify(contacts));
     }
-  }
+  };
 
   addContact = ({ name, number }) => {
     const normalizedName = name.toLowerCase();
